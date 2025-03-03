@@ -19,6 +19,7 @@ func resolve_identity_from_handle(handle: String): ## Resolve an identity from a
 	print("Resolving handle: " + handle);
 	var did = await find_did_from_handle(handle);
 	print("DID: ", did);
+	fetch_did_info_from_plc(did);
 
 func find_did_from_handle(handle: String) -> String: ## Check well-knowns and text records to resolve a DID from a handle
 	var did: String = "N/A";
@@ -28,6 +29,8 @@ func find_did_from_handle(handle: String) -> String: ## Check well-knowns and te
 	
 	# try txt record
 	did = await resolve_txt_record(handle);
+	
+	did = did.erase(0, 4);
 	
 	return did;
 
@@ -43,7 +46,7 @@ func resolve_txt_record(handle: String) -> String:
 	if resp.success() and resp.status_ok():
 		var json = JSON.new();
 		json = resp.body_as_json();
-		
+		request.queue_free();
 		
 		if json and "Answer" in json:
 			for answer in json["Answer"]:
@@ -53,14 +56,14 @@ func resolve_txt_record(handle: String) -> String:
 					return current_did;
 	return "";
 
-func txt_request_return(result, response_code, headers, body) -> String:
-	if response_code == 200:
-		var json = JSON.parse_string(body.get_string_from_utf8());
-		if json and "Answer" in json:
-			for answer in json["Answer"]:
-				if answer["type"] == 16: 
-					print("TXT Record:", answer["data"]);
-					current_did = answer["data"];
-					return current_did;
-	current_did = "";
-	return "";
+func fetch_did_info_from_plc(did: String):
+	var url = "https://plc.directory/" + did;
+	
+	var request: HTTPRequest = AwaitableHTTPRequest.new();
+	add_child(request);
+	var resp = await request.async_request(url);
+	
+	if resp.success() and resp.status_ok():
+		var json = JSON.new();
+		json = resp.body_as_json();
+		request.queue_free();
