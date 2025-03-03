@@ -32,16 +32,26 @@ func find_did_from_handle(handle: String) -> String: ## Check well-knowns and te
 	return did;
 
 func resolve_txt_record(handle: String) -> String:
-	var http_request: HTTPRequest = AwaitableHTTPRequest.new();
-	add_child(http_request);
-	
-	http_request.connect("request_completed", Callable(self, "txt_request_return"));
-	
 	var url = "https://dns.google/resolve?name=_atproto." + handle + "&type=TXT";
 	var headers = ["Accept: application/dns-json"];
-	var request = await http_request.request(url, headers);
 	
-	return current_did;
+	var request: HTTPRequest = AwaitableHTTPRequest.new();
+	add_child(request);
+	var resp = await request.async_request(url);
+	
+	
+	if resp.success() and resp.status_ok():
+		var json = JSON.new();
+		json = resp.body_as_json();
+		
+		
+		if json and "Answer" in json:
+			for answer in json["Answer"]:
+				if answer["type"] == 16: 
+					print("TXT Record:", answer["data"]);
+					current_did = answer["data"];
+					return current_did;
+	return "";
 
 func txt_request_return(result, response_code, headers, body) -> String:
 	if response_code == 200:
