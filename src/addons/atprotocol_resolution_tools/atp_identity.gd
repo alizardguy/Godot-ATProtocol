@@ -18,11 +18,10 @@ var current_did: String;
 func resolve_identity_from_handle(handle: String): ## Resolve an identity from a handle
 	print("Resolving handle: " + handle);
 	var did = await find_did_from_handle(handle);
-	print("DID: ", did)
+	print("DID: ", did);
 
-func find_did_from_handle(handle: String): ## Check well-knowns and text records to resolve a DID from a handle
-	var did: String;
-	
+func find_did_from_handle(handle: String) -> String: ## Check well-knowns and text records to resolve a DID from a handle
+	var did: String = "N/A";
 
 	# try well known
 	# todo: also check wellknown files (wellknown should always be checked first)
@@ -32,17 +31,15 @@ func find_did_from_handle(handle: String): ## Check well-knowns and text records
 	
 	return did;
 
-func resolve_txt_record(handle: String):
-	var http_request: HTTPRequest = HTTPRequest.new();
+func resolve_txt_record(handle: String) -> String:
+	var http_request: HTTPRequest = AwaitableHTTPRequest.new();
 	add_child(http_request);
 	
 	http_request.connect("request_completed", Callable(self, "txt_request_return"));
 	
 	var url = "https://dns.google/resolve?name=_atproto." + handle + "&type=TXT";
 	var headers = ["Accept: application/dns-json"];
-	await http_request.request(url, headers);
-	
-	await current_did != null
+	var request = await http_request.request(url, headers);
 	
 	return current_did;
 
