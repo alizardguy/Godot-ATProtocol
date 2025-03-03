@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpxdluu0fqxnm"]
+
+[ext_resource type="Script" path="res://addons/atprotocol_resolution_tools/scenes/resolve_user_ui.gd" id="1_bmqnl"]
+
+[node name="UI" type="Control" node_paths=PackedStringArray("handle_input")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bmqnl")
+handle_input = NodePath("CenterContainer/Panel/Resolve/TextEdit")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Resolve" type="Button" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = 11.5
+offset_right = 34.0
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Resolve from handle"
+
+[node name="TextEdit" type="TextEdit" parent="CenterContainer/Panel/Resolve"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -174.5
+offset_top = -65.0
+offset_right = 174.5
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "alizard.gay"
+placeholder_text = "Handle"
+
+[connection signal="pressed" from="CenterContainer/Panel/Resolve" to="." method="_on_resolve_pressed"]
