@@ -3,4 +3,4 @@ extends Control
 @export var handle_input: TextEdit;
 
 func _on_resolve_pressed():
-	ATPIdentity.resolve_identity_from_handle(handle_input.text);
+	ATPResolution.resolve_identity_from_handle(handle_input.text);

@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-ATPIdentity="*res://addons/atprotocol_resolution_tools/atp_identity.gd"
+ATPResolution="*res://addons/atprotocol_resolution_tools/atp_resolution.gd"
 
 [editor_plugins]
 
