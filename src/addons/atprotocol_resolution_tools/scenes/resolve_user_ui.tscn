@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cpxdluu0fqxnm"]
 
-[ext_resource type="Script" path="res://addons/atprotocol_resolution_tools/scenes/resolve_user_ui.gd" id="1_bmqnl"]
+[ext_resource type="Script" uid="uid://d0itae6ps4ukf" path="res://addons/atprotocol_resolution_tools/scenes/resolve_user_ui.gd" id="1_bmqnl"]
 
 [node name="UI" type="Control" node_paths=PackedStringArray("handle_input")]
 layout_mode = 3
